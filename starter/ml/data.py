@@ -64,7 +64,10 @@ def process_data(
             y = lb.transform(y.values).ravel()
         # Catch the case where y is None because we're doing inference.
         except AttributeError:
-            pass
+            print(
+                "if 'training' is set to False, 'label' must be specified in order to provide a target for inference"
+                )
+            
 
     X = np.concatenate([X_continuous, X_categorical], axis=1)
     return X, y, encoder, lb
