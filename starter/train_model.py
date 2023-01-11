@@ -40,6 +40,6 @@ X_test, y_test, encoder, lb = process_data(
 gbm_model = train_model(X_train, y_train)
 
 filename = 'finalized_model.pkl'
-joblib.dump(model, "../model/"+filename)
+joblib.dump(gbm_model, "../model/"+filename)
 
 
