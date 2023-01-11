@@ -21,7 +21,7 @@ jobs:
             os: ["ubuntu-latest", "windows-latest"]
     steps:
       - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: test
           environment-file: environment.yml
