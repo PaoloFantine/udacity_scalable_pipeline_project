@@ -1,4 +1,4 @@
-name: scalable-pipeline
+name: final-scalable-pipeline
 channels:
   - conda-forge
   - defaults
