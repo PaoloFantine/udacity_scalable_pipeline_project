@@ -3,6 +3,7 @@
 import pandas as pd
 import joblib
 import sys
+from numpy import savetxt
 
 from sklearn.model_selection import train_test_split
 
@@ -15,10 +16,9 @@ from ml.data import process_data
 # Add code to load in the data.
 sys.path.append('../data')
 df = pd.read_csv("data/census.csv")
-df.columns  = [col.replace(' ', '') for col in df.columns]
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(df, test_size=0.20)
+train, test = train_test_split(df, stratify=df['salary'], test_size=0.20, random_state=42)
 
 cat_features = [
     "workclass",
@@ -34,10 +34,16 @@ X_train, y_train, encoder, lb = process_data(
     train, categorical_features=cat_features, label="salary", training=True
 )
 
-# Proces the test data with the process_data function.
-X_test, y_test, encoder, lb = process_data(
-    test, categorical_features=cat_features, label="salary", training=True
+# Process the test data with the process_data function.
+X_test, y_test, _, _ = process_data(
+    test, categorical_features=cat_features, label="salary", training=False,
+    encoder=encoder, lb=lb
 )
+
+# save test data to csv file for later
+savetxt('data/X_test.csv', X_test, delimiter=',')
+savetxt('data/y_test.csv', y_test, delimiter=',')
+
 
 # Train and save a model.
 gbm_model = train_model(X_train, y_train)
