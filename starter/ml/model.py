@@ -1,4 +1,5 @@
 # Helper functions to train a model, compute model metrics and run inference
+import random
 
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
@@ -19,8 +20,8 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-
-    return GradientBoostingClassifier().fit(X_train, y_train)
+    
+    return GradientBoostingClassifier(random_state=42).fit(X_train, y_train)
 
 
 def compute_model_metrics(y, preds):
