@@ -7,7 +7,7 @@ from numpy import savetxt
 
 from sklearn.model_selection import train_test_split
 
-from ml.model import train_model, compute_model_metrics, inference
+from ml.model import train_model, compute_model_metrics, inference, slice_metrics
 from ml.data import process_data
 
 
@@ -51,5 +51,18 @@ gbm_model = train_model(X_train, y_train)
 sys.path.append('../model')
 filename = 'gbm_model.pkl'
 joblib.dump(gbm_model, "model/"+filename)
+
+# test model performance
+preds = inference(gbm_model, X_test)
+
+# compute global and slice model metrics
+model_metrics = pd.DataFrame(compute_model_metrics(y_test, preds), index=[0])
+model_metrics.to_csv('model/model_metrics.csv')
+
+slice_metrics = {col: slice_metrics(test, preds, y_test, col) for col in cat_features}
+
+[slice_df.to_csv(f"model/{key}_sliced_metrics.csv") for key, slice_df in slice_metrics.items()]
+
+
 
 

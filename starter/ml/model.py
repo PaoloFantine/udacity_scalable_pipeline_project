@@ -1,5 +1,6 @@
 # Helper functions to train a model, compute model metrics and run inference
 import random
+import pandas as pd
 
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
@@ -43,7 +44,7 @@ def compute_model_metrics(y, preds):
     fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
     precision = precision_score(y, preds, zero_division=1)
     recall = recall_score(y, preds, zero_division=1)
-    return precision, recall, fbeta
+    return {"precision":precision, "recall": recall, "fbeta":fbeta}
 
 
 def inference(model, X):
@@ -61,3 +62,34 @@ def inference(model, X):
         Predictions from the model.
     """
     return model.predict(X)
+
+def slice_metrics(test_data, preds, actual, slice_col):
+    """ compute model metrics on slices of data
+
+    Inputs
+    ------
+    test_data : pandas.DataFrame
+        data for which the metrics are desired
+    preds : np.array, pd.Series, list
+        predictions for df as output by `inference`
+    actual : np.array, pd.Series, list
+        actual outcomes from the raw test_data
+    slice_col : str
+        columns to use for slicing
+    Returns
+    -------
+    pandas.DataFrame
+        dataframe where columns are the single model slices and rows,
+        respectivels, precision, recall, fbeta scores for each slice
+    """
+    slices = test_data[slice_col].unique()
+    
+    slice_dict = {}
+    for val in slices:
+        
+        idx = test_data[slice_col]==val
+        slice_dict[val] = compute_model_metrics(preds[idx], actual[idx])
+        
+    return pd.DataFrame(slice_dict)
+
+
