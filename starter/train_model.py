@@ -43,6 +43,8 @@ X_test, y_test, _, _ = process_data(
 # save test data to csv file for later
 savetxt('data/X_test.csv', X_test, delimiter=',')
 savetxt('data/y_test.csv', y_test, delimiter=',')
+joblib.dump(encoder, "model/OneHotEncoder.pkl")
+joblib.dump(lb, "model/LabelBinarizer.pkl")
 
 
 # Train and save a model.

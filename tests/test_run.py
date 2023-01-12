@@ -61,7 +61,7 @@ def y_test():
 
 @pytest.fixture
 def model_metrics_list(y_test, preds):
-    return compute_model_metrics(y_test, preds)
+    return compute_model_metrics(y_test, preds).values()
 
 def test_model_metrics(model_metrics_list):
     '''
