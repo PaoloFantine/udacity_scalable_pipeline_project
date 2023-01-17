@@ -1,3 +1,19 @@
+#name: Trigger Render Deployment
+#on:
+#  push:
+#    branches:
+#      - main
+#jobs:
+#  main:
+#    name: Deploy to Render
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Trigger deployment
+#        uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
+#        with:
+#          serviceId: ${{ secrets.service_id }}
+#          apiKey: ${{ secrets.RENDER_TOKEN }}
+#          multiple: false #optional, default true
 name: Render
 on: 
     push:
@@ -13,6 +29,6 @@ jobs:
           render-token: ${{ secrets.RENDER_TOKEN }}
           github-token: ${{ secrets.UDACITY_GITHUB_TOKEN }}
           service-id: ${{ secrets.service_id }}
-          retries: 20
+          retries: 5
           wait: 16000
           sleep: 30000
