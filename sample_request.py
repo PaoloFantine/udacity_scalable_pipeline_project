@@ -18,7 +18,9 @@ data = {
 "native_country": "United-States",
 }
 
-r = requests.post("http://127.0.0.1:8000/data", data=json.dumps(data))
+welcome = requests.get("https://udacity-scalable-pl-deployment.onrender.com")#127.0.0.1:8000
+r = requests.post("https://udacity-scalable-pl-deployment.onrender.com/data", data=json.dumps(data))
 
+print(welcome.json())
 print(r.json())
-print(r.content)
+print("status_code:", r.status_code)
